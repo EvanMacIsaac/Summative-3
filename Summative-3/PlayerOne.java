@@ -15,6 +15,8 @@ public class PlayerOne extends Actor
     int gravity = 1;
     int jumpHight = -15;
     boolean isInAir = true;
+    int degrees = 360/8;
+    Bubble[] bubbles;
     /**
      * Act - do whatever the PlayerOne wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -113,5 +115,15 @@ public class PlayerOne extends Actor
         // Adjust character position so that its bottom edge is just touching top edge of object.
         setLocation(getX(), object.getY() - objectHeight / 2 - height / 2 + 1); // Plus 1 to make character sink into object by 1 pixel.
         
+    }
+    public void forceField()
+    {
+        bubbles = new Bubble[8];
+        for (int i = 0; i < bubbles.length; i++)
+        {
+            getWorld().addObject(bubbles[i],getX(),getY());
+            setRotation(i * degrees);
+            move(50);
+        }
     }
 }
