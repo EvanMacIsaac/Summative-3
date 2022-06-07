@@ -1,13 +1,13 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class PlayerOne here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class PlayerOne extends Actor
-{
+    /**
+    * Write a description of class PlayerOne here.
+    * 
+    * @author (your name) 
+    * @version (a version number or a date)
+    */
+    public class PlayerOne extends Actor
+    {
     int deltaX = 0;
     int deltaY = 0;
     // movement speed.
@@ -18,16 +18,21 @@ public class PlayerOne extends Actor
     boolean areBubblesSpawned = false;
     int degrees = 360/8;
     Bubble[] bubbles;
+    public PlayerOne()
+    {
+         bubbles = new Bubble[8];
+    }
     /**
-     * Act - do whatever the PlayerOne wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    * Act - do whatever the PlayerOne wants to do. This method is called whenever
+    * the 'Act' or 'Run' button gets pressed in the environment.
+    */
     public void act() 
     {
         // Add your action code here.
         bumpHead();
         movementControls();
         defenceControls();
+    
     }    
     public void movementControls()
     {
@@ -63,8 +68,8 @@ public class PlayerOne extends Actor
         }
     }
     /**
-     *  if on block able to jump. if not you are not apply gravity.
-     */
+    *  if on block able to jump. if not you are not apply gravity.
+    */
     public void applyGravity()
     {
         int height = getImage().getHeight();
@@ -85,8 +90,8 @@ public class PlayerOne extends Actor
         }
     }
     /**
-     *  if ObjectAtOffset collides inact stayUnderBrick.
-     */
+    *  if ObjectAtOffset collides inact stayUnderBrick.
+    */
     public void bumpHead()
     {
         int height = getImage().getHeight();
@@ -97,68 +102,78 @@ public class PlayerOne extends Actor
         }
     }
     /**
-     *  stay under the brick when collision occurs.
-     */
+    *  stay under the brick when collision occurs.
+    */
     public void stayUnderBrick(Actor object)
     {
-         int height = getImage().getHeight();
-         int objectHeight = object.getImage().getHeight();
-        
-         setLocation(getX(), object.getY() + objectHeight / 2 +  height / 2 + 1);
+        int height = getImage().getHeight();
+        int objectHeight = object.getImage().getHeight();
+    
+        setLocation(getX(), object.getY() + objectHeight / 2 +  height / 2 + 1);
     }
     /**
-     *  stay on top of the Brick when standing on it.
-     */
+    *  stay on top of the Brick when standing on it.
+    */
     public void moveOnTopOfObject(Actor object)
     {
         int height = getImage().getHeight();
         int objectHeight = object.getImage().getHeight();
-        
+    
         // Adjust character position so that its bottom edge is just touching top edge of object.
         setLocation(getX(), object.getY() - objectHeight / 2 - height / 2 + 1); // Plus 1 to make character sink into object by 1 pixel.
-        
+    
     }
+    
     public void defenceControls()
     {
-        if (Greenfoot.isKeyDown("c"))
+    
+        if (areBubblesSpawned == false && Greenfoot.isKeyDown("c"))
         {
             forceField();
             areBubblesSpawned = true;
             Greenfoot.delay(40);
-            
-        }
-        if (Greenfoot.isKeyDown("x"))
-        {
-            getWorld().removeObject(bubbles);
+        
         }
         if (areBubblesSpawned == true)
         {
             bubblesMovementControls();
         }
+        if (areBubblesSpawned == true && Greenfoot.isKeyDown("c"))
+        {
+            
+            for (int i = 0; i < bubbles.length; i++)
+            {
+             getWorld().removeObject(bubbles[i]);
+            
+            }   
+            Greenfoot.delay(40);
+            areBubblesSpawned = false;
+        }
+    
     }
     public void forceField()
     {
         bubbles = new Bubble[8];
-        
+    
         for (int i = 0; i < bubbles.length; i++)
-        {
+        {   
             bubbles[i] = new Bubble();
             getWorld().addObject(bubbles[i],getX(),getY());
             bubbles[i].setRotation(i * degrees);
             bubbles[i].move(100);
-            
-        }
         
+        }
+    
     }
     public void bubblesMovementControls()
     {
-        
+ 
         for (int i = 0; i < bubbles.length; i++)
         {
-          
-          // update position
-          bubbles[i].setLocation(bubbles[i].getX() + deltaX,bubbles[i].getY() + deltaY);
-        }
-        
+            // update position
+            bubbles[i].setLocation(bubbles[i].getX() + deltaX,bubbles[i].getY() + deltaY);
+        }     
+
     }
+
 }
