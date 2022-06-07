@@ -15,6 +15,7 @@ public class PlayerOne extends Actor
     int gravity = 1;
     int jumpHight = -15;
     boolean isInAir = true;
+    boolean areBubblesSpawned = false;
     int degrees = 360/8;
     Bubble[] bubbles;
     /**
@@ -26,6 +27,7 @@ public class PlayerOne extends Actor
         // Add your action code here.
         bumpHead();
         movementControls();
+        defenceControls();
     }    
     public void movementControls()
     {
@@ -116,14 +118,47 @@ public class PlayerOne extends Actor
         setLocation(getX(), object.getY() - objectHeight / 2 - height / 2 + 1); // Plus 1 to make character sink into object by 1 pixel.
         
     }
+    public void defenceControls()
+    {
+        if (Greenfoot.isKeyDown("c"))
+        {
+            forceField();
+            areBubblesSpawned = true;
+            Greenfoot.delay(40);
+            
+        }
+        if (Greenfoot.isKeyDown("x"))
+        {
+            getWorld().removeObject(bubbles);
+        }
+        if (areBubblesSpawned == true)
+        {
+            bubblesMovementControls();
+        }
+    }
     public void forceField()
     {
         bubbles = new Bubble[8];
+        
         for (int i = 0; i < bubbles.length; i++)
         {
+            bubbles[i] = new Bubble();
             getWorld().addObject(bubbles[i],getX(),getY());
-            setRotation(i * degrees);
-            move(50);
+            bubbles[i].setRotation(i * degrees);
+            bubbles[i].move(100);
+            
         }
+        
+    }
+    public void bubblesMovementControls()
+    {
+        
+        for (int i = 0; i < bubbles.length; i++)
+        {
+          
+          // update position
+          bubbles[i].setLocation(bubbles[i].getX() + deltaX,bubbles[i].getY() + deltaY);
+        }
+        
     }
 }
